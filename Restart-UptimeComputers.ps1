@@ -10,5 +10,5 @@ $Uptime = (Get-Date) - $OS.ConvertToDateTime($OS.LastBootUpTime)
 if($DaysUp -ge $Days){
     $Tomorrow = (Get-Date).AddDays(1).Date.AddHours($Hours)
     msg.exe * "Your computer has been up for $($DaysUp). Scheduling a restart for $($Tomorrow)."
-    shutdown -r -t ([decimal]::round((Get-Date).AddDays(1).Date.AddHours($Hours) - (Get-Date).TotalSeconds))
+    shutdown -r -t ([decimal]::round(((Get-Date).AddDays(1).Date.AddHours($Hours) - (Get-Date)).TotalSeconds))
 }
