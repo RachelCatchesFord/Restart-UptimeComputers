@@ -1,6 +1,6 @@
 Param(
     [parameter(Mandatory)][int]$Days,
-    [parameter(Mandatory)][int]$Hours
+    [parameter(Mandatory)][int]$Time
 )
 
 $OS = Get-wmiobject Win32_OperatingSystem
@@ -8,7 +8,7 @@ $Uptime = (Get-Date) - $OS.ConvertToDateTime($OS.LastBootUpTime)
 [int]$DaysUp = $Uptime.TotalDays
 
 if($DaysUp -ge $Days){
-    $Tomorrow = (Get-Date).AddDays(1).Date.AddHours($Hours)
+    $Tomorrow = (Get-Date).AddDays(1).Date.AddHours($Time)
     msg.exe * "Your computer has been up for $($DaysUp). Scheduling a restart for $($Tomorrow)."
-    shutdown -r -t ([decimal]::round(((Get-Date).AddDays(1).Date.AddHours($Hours) - (Get-Date)).TotalSeconds))
+    shutdown -r -t ([decimal]::round(($Tomorrow - (Get-Date)).TotalSeconds))
 }
