@@ -76,7 +76,6 @@ Try {
 	[string]$regPath = "$agency\$appVendor"
 	## Close apps
 	$closeApps = '' # seperate apps to close by commas. Needs to be the name of the .exe, without the extension
-	[int]$Days = 0
 	[int]$Time = 2
 
 	##*===============================================
@@ -128,16 +127,7 @@ Try {
 		##*===============================================
 		[string]$installPhase = 'Pre-Installation'
 
-		## <Perform Pre-Installation tasks here>
-		$OS = Get-wmiobject Win32_OperatingSystem
-		$Uptime = (Get-Date) - $OS.ConvertToDateTime($OS.LastBootUpTime)
-		[int]$DaysUp = $Uptime.TotalDays
-
-		if($DaysUp -ge $Days){
-    		$Tomorrow = (Get-Date).AddDays(1).Date.AddHours($Time)
-			#shutdown -r -t ([decimal]::round(($Tomorrow - (Get-Date)).TotalSeconds))
-			Show-InstallationRestartPrompt -CountDownSeconds ([decimal]::round(($Tomorrow - (Get-Date)).TotalSeconds))
-		}
+		
 
 		##*===============================================
 		##* INSTALLATION
@@ -151,7 +141,12 @@ Try {
 		}
 
 		## <Perform Installation tasks here>
-
+		$OS = Get-wmiobject Win32_OperatingSystem
+		$Uptime = (Get-Date) - $OS.ConvertToDateTime($OS.LastBootUpTime)
+		[int]$DaysUp = $Uptime.TotalDays
+   		$Tomorrow = (Get-Date).AddDays(1).Date.AddHours($Time)
+		#shutdown -r -t ([decimal]::round(($Tomorrow - (Get-Date)).TotalSeconds))
+		Show-InstallationRestartPrompt -CountDownSeconds ([decimal]::round(($Tomorrow - (Get-Date)).TotalSeconds))
 
 		##*===============================================
 		##* POST-INSTALLATION
