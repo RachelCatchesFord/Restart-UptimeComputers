@@ -144,7 +144,7 @@ Try {
 		$OS = Get-wmiobject Win32_OperatingSystem
 		$Uptime = (Get-Date) - $OS.ConvertToDateTime($OS.LastBootUpTime)
 		[int]$DaysUp = $Uptime.TotalDays
-		Show-InstallationPrompt -Message "Your computer has been up for $DaysUp days. It needs to be restarted." -ButtonRightText 'OK' -Icon Information
+		Show-DialogBox -text "Your computer has been up for $DaysUp days. It needs to be restarted." -Icon Information -Timeout 900
    		$Tomorrow = (Get-Date).AddDays(1).Date.AddHours($Time)
 		shutdown -r -t ([decimal]::round(($Tomorrow - (Get-Date)).TotalSeconds))
 		Show-InstallationRestartPrompt -CountDownSeconds ([decimal]::round(($Tomorrow - (Get-Date)).TotalSeconds))
