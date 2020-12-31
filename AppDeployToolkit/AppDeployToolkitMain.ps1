@@ -6950,7 +6950,8 @@ Function Show-InstallationRestartPrompt {
 
 		[scriptblock]$RestartComputer = {
 			Write-Log -Message 'Force restart the computer...' -Source ${CmdletName}
-			Restart-Computer -Force
+			#Restart-Computer -Force
+			cmd /c "shutdown /r /t 00"
 		}
 
 		[scriptblock]$FormEvent_Load = {
