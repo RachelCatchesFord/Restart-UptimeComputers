@@ -67,8 +67,8 @@ Try {
 	[string]$appArch = 'x64'
 	[string]$appLang = 'EN'
 	[string]$appRevision = '01'
-	[string]$appScriptVersion = '1.0.0'
-	[string]$appScriptDate = '2020.12.23'
+	[string]$appScriptVersion = $appScriptDate
+	[string]$appScriptDate = '2021.01.14'
 	[string]$appScriptAuthor = 'Brandon Kessler and Rachel Catches-Ford'
 
 	## Adds a Registry Key variable for SCCM Detection Method
@@ -149,6 +149,13 @@ Try {
 
 		if($DaysUp -gt $Days){
 			Write-Warning "System has been up for $DaysUp."
+			## Detect Logged on Users
+			$LoggedOnUsers = Get-Process -IncludeUserName | Select-Object UserName,SessionId | Where-Object {($_.UserName -ne $null) -and ($_.UserName -like "$Domain*")} | Sort-Object SessionId -Unique
+
+			if(!($LoggedOnUsers)){
+				Write-Warning "No users detected. Restarting Machine now."
+				shutdown -r -t 900
+			}
     		if(!(get-eventlog -LogName System -InstanceId 2147484722 -after (Get-date).addDays(-1))){
 				Show-DialogBox -text "Your computer has been up for $DaysUp days. It needs to be restarted." -Icon Information -Timeout 900
 				$Tomorrow = (Get-Date).AddDays(1).Date.AddHours($Time)
