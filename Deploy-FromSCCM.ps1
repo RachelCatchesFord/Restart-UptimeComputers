@@ -4,15 +4,15 @@ Param(
 )
 
 ## Copy PSADT to local machine
-Copy-Item -Path . -Destination $Destination -Force -Recurse
-
-
-
+if(Test-Path -Path $Destination){
+    Remove-Item -Path $Destination -Recurse -Force
+    Copy-Item -Path . -Destination $Destination -Force -Recurse
+}
 
 ## Scheduled Task goes here
 
 if(Get-ScheduledTask -TaskName 'MandatoryReboot'){
-    Unregister-ScheduledTask -TaskName 'MandatoryReboot'
+    Unregister-ScheduledTask -TaskName 'MandatoryReboot' -Confirm:$false
 }
 
 #New scheduled task to trigger at logon or unlock
