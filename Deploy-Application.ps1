@@ -161,6 +161,11 @@ Try {
 				$Tomorrow = (Get-Date).AddDays(1).Date.AddHours($Time)
 				shutdown -r -t ([decimal]::round(($Tomorrow - (Get-Date)).TotalSeconds))
 				Show-InstallationRestartPrompt -CountDownSeconds ([decimal]::round(($Tomorrow - (Get-Date)).TotalSeconds))
+			}elseif(get-eventlog -LogName System -InstanceId 2147484722 -after (Get-date).addDays(-1)){
+				#Show-DialogBox -text "Your computer has been up for $DaysUp days. It needs to be restarted." -Icon Information -Timeout 900
+				$Tomorrow = (Get-Date).AddDays(1).Date.AddHours($Time)
+				#shutdown -r -t ([decimal]::round(($Tomorrow - (Get-Date)).TotalSeconds))
+				Show-InstallationRestartPrompt -CountDownSeconds ([decimal]::round(($Tomorrow - (Get-Date)).TotalSeconds))
 			}
 		}
 
