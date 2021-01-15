@@ -16,7 +16,7 @@ if(Test-Path -Path $Destination){
 ## Scheduled Task goes here
 if(Get-ScheduledTask -TaskName $TaskName){
     Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false
-
+}
 
 #New scheduled task to trigger at logon or unlock
 $stateChangeTrigger = Get-CimClass `
@@ -38,5 +38,5 @@ $(New-ScheduledTaskTrigger -AtLogOn),
 $($onUnlockTrigger)
 )
 
-Register-ScheduledTask -Action $action -Trigger $trigger -TaskName $TaskName -Description 'Automagically reboots the machine if Uptime is 7+ days.' -User 'System'
+Register-ScheduledTask -Action $action -Trigger $trigger -TaskName $TaskName -Description 'Automagically reboots the machine if Uptime is 7+ days.' -User $env:USERNAME
 Start-ScheduledTask -TaskName $TaskName
