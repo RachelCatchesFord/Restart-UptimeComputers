@@ -7,6 +7,8 @@ Param(
 if(Test-Path -Path $Destination){
     Remove-Item -Path $Destination -Recurse -Force
     Copy-Item -Path . -Destination $Destination -Force -Recurse
+}else{
+    Copy-Item -Path . -Destination $Destination -Force -Recurse
 }
 
 ## Scheduled Task goes here
