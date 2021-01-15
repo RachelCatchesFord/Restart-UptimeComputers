@@ -3,6 +3,8 @@ Param(
     [Parameter(Mandatory = $true,Position = 1)][String]$Domain
 )
 
+$TaskName = 'MandatoryReboot'
+
 ## Copy PSADT to local machine
 Copy-Item -Path . -Destination $Destination -Force -Recurse
 
@@ -11,8 +13,8 @@ Copy-Item -Path . -Destination $Destination -Force -Recurse
 
 ## Scheduled Task goes here
 
-if(Get-ScheduledTask -TaskName 'MandatoryReboot'){
-    Unregister-ScheduledTask -TaskName 'MandatoryReboot'
+if(Get-ScheduledTask -TaskName $TaskName){
+    Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false
 }
 
 #New scheduled task to trigger at logon or unlock
@@ -27,7 +29,7 @@ $onUnlockTrigger = New-CimInstance `
     } `
     -ClientOnly
 
-$TaskName = 'MandatoryReboot'
+
 $ActionPath = "$Destination"
 $action = New-ScheduledTaskAction -WorkingDirectory $ActionPath -Execute "Deploy-Application.exe"
 $trigger = @(
