@@ -27,12 +27,13 @@ $onUnlockTrigger = New-CimInstance `
     } `
     -ClientOnly
 
-$ActionPath = "C:\Program Files\OIT\Restart-UptimeComputersPSADT"
+$TaskName = 'MandatoryReboot'
+$ActionPath = "$Destination"
 $action = New-ScheduledTaskAction -WorkingDirectory $ActionPath -Execute "Deploy-Application.exe"
 $trigger = @(
 $(New-ScheduledTaskTrigger -AtLogOn), 
 $($onUnlockTrigger)
 )
 
-Register-ScheduledTask -Action $action -Trigger $trigger -TaskName 'MandatoryReboot' -Description 'Automagically reboots the machine if Uptime is 7+ days.' -User 'System'
-Start-ScheduledTask -TaskName 'MandatoryReboot'
+Register-ScheduledTask -Action $action -Trigger $trigger -TaskName $TaskName -Description 'Automagically reboots the machine if Uptime is 7+ days.' -User 'System'
+Start-ScheduledTask -TaskName $TaskName
