@@ -37,5 +37,5 @@ $(New-ScheduledTaskTrigger -AtLogOn),
 $($onUnlockTrigger)
 )
 
-Register-ScheduledTask -Action $action -Trigger $trigger -TaskName $TaskName -Description 'Automagically reboots the machine if Uptime is 7+ days.' -User $env:USERNAME
+Register-ScheduledTask -Action $action -Trigger $trigger -TaskName $TaskName -Description 'Automagically reboots the machine if Uptime is 7+ days.' -User $env:USERNAME -RunLevel Highest
 Start-ScheduledTask -TaskName $TaskName
