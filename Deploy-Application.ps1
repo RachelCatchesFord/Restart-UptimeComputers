@@ -141,6 +141,7 @@ Try {
 		}
 
 		## <Perform Installation tasks here>
+<<<<<<< HEAD
 
 		$OS = Get-wmiobject Win32_OperatingSystem
 		$Uptime = (Get-Date) - $OS.ConvertToDateTime($OS.LastBootUpTime)
@@ -167,8 +168,17 @@ Try {
 				#shutdown -r -t ([decimal]::round(($Tomorrow - (Get-Date)).TotalSeconds))
 				Show-InstallationRestartPrompt -CountDownSeconds ([decimal]::round(($Tomorrow - (Get-Date)).TotalSeconds))
 			}
+=======
+		if(!(get-eventlog -LogName System -InstanceId 2147484722 -after (Get-date).addDays(-1))){
+			$OS = Get-wmiobject Win32_OperatingSystem
+			$Uptime = (Get-Date) - $OS.ConvertToDateTime($OS.LastBootUpTime)
+			[int]$DaysUp = $Uptime.TotalDays
+			Show-DialogBox -text "Your computer has been up for $DaysUp days. It needs to be restarted." -Icon Information -Timeout 900
+			   $Tomorrow = (Get-Date).AddDays(1).Date.AddHours($Time)
+			shutdown -r -t ([decimal]::round(($Tomorrow - (Get-Date)).TotalSeconds))
+			Show-InstallationRestartPrompt -CountDownSeconds ([decimal]::round(($Tomorrow - (Get-Date)).TotalSeconds))
+>>>>>>> parent of 7fd8e8c... removed Ballone notification.
 		}
-
 		
 
 		##*===============================================
