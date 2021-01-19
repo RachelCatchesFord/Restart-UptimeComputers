@@ -151,11 +151,12 @@ Try {
 		if($DaysUp -gt $Days){
 			Write-Warning "System has been up for $DaysUp."
 			## Detect Logged on Users
-			$LoggedOnUsers = Get-Process -IncludeUserName | Select-Object UserName,SessionId | Where-Object {($_.UserName -ne $null) -and ($_.UserName -like "$Domain*")} | Sort-Object SessionId -Unique
+			#$LoggedOnUsers = Get-Process -IncludeUserName | Select-Object UserName,SessionId | Where-Object {($_.UserName -ne $null) -and ($_.UserName -like "$Domain*")} | Sort-Object SessionId -Unique
 
-			if(!($LoggedOnUsers)){
+			if(!(Get-LoggedOnUsers)){
 				Write-Warning "No users detected. Restarting Machine now."
 				shutdown -r -t 900
+				Exit 0
 			}
     		if(!(get-eventlog -LogName System -InstanceId 2147484722 -after (Get-date).addDays(-1))){
 				Show-DialogBox -text "Your computer has been up for $DaysUp days. It needs to be restarted." -Icon Information -Timeout 900
@@ -168,7 +169,6 @@ Try {
 				#shutdown -r -t ([decimal]::round(($Tomorrow - (Get-Date)).TotalSeconds))
 				Show-InstallationRestartPrompt -CountDownSeconds ([decimal]::round(($Tomorrow - (Get-Date)).TotalSeconds))
 			}
-
 		}
 
 		##*===============================================
