@@ -146,6 +146,20 @@ Try {
 		## <Perform Installation tasks here>
 		$TSEnv = New-Object -ComObject Microsoft.SMS.TSEnvironment
 
+		#Set DaysUp Variable
+		$OS = Get-wmiobject Win32_OperatingSystem
+		$Uptime = (Get-Date) - $OS.ConvertToDateTime($OS.LastBootUpTime)
+		[int]$DaysUp = $Uptime.TotalDays
+		$Days = 7
+
+		if($DaysUp -lt $Days){
+        	$TSEnv.Value("SystemUptimeCompliance") = "$true"
+    		Write-Output "Machine has been restarted in the last $Days days."
+		}else{
+        	$TSEnv.Value("SystemUptimeCompliance") = "$false"
+    		Write-Output "Machine has NOT been restarted in the last $Days days."
+		}
+
 		## Check if user logged on
 		if($null -eq (Get-LoggedOnUser)){
 			$TSEnv.Value("LoggedOnUser") = "false"
