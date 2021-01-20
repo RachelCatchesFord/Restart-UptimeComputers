@@ -146,7 +146,7 @@ Try {
 		$OS = Get-wmiobject Win32_OperatingSystem
 		$Uptime = (Get-Date) - $OS.ConvertToDateTime($OS.LastBootUpTime)
 		[int]$DaysUp = $Uptime.TotalDays
-		$Days = 0
+		$Days = 7
 
 		if($DaysUp -gt $Days){
 			Write-Warning "System has been up for $DaysUp."
