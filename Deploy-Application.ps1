@@ -153,7 +153,7 @@ Try {
 			## Detect Logged on Users
 			#$LoggedOnUsers = Get-Process -IncludeUserName | Select-Object UserName,SessionId | Where-Object {($_.UserName -ne $null) -and ($_.UserName -like "$Domain*")} | Sort-Object SessionId -Unique
 
-			if((Get-LoggedOnUser)){
+			if(($null -eq (Get-LoggedOnUser))){
 				Write-Warning "No users detected. Restarting Machine now."
 				shutdown -r -t 900
 				Exit 0
