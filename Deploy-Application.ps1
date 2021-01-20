@@ -146,14 +146,14 @@ Try {
 		$OS = Get-wmiobject Win32_OperatingSystem
 		$Uptime = (Get-Date) - $OS.ConvertToDateTime($OS.LastBootUpTime)
 		[int]$DaysUp = $Uptime.TotalDays
-		$Days = 7
+		$Days = 0
 
 		if($DaysUp -gt $Days){
 			Write-Warning "System has been up for $DaysUp."
 			## Detect Logged on Users
 			#$LoggedOnUsers = Get-Process -IncludeUserName | Select-Object UserName,SessionId | Where-Object {($_.UserName -ne $null) -and ($_.UserName -like "$Domain*")} | Sort-Object SessionId -Unique
 
-			if(!(Get-LoggedOnUsers)){
+			if((Get-LoggedOnUser)){
 				Write-Warning "No users detected. Restarting Machine now."
 				shutdown -r -t 900
 				Exit 0
