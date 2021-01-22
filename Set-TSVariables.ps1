@@ -161,12 +161,23 @@ Try {
 		}
 
 		## Check if user logged on
+		Get-LoggedOnUser
 		if($null -eq (Get-LoggedOnUser)){
-			$TSEnv.Value("LoggedOnUser") = "false"
+			$TSEnv.Value("LoggedOnUser") = "False"
 			Write-Output "No Logged On Users Detected."
 		}else{
-			$TSEnv.Value("LoggedOnUser") = "true"
-			Write-Output "Detected Logged On User(s)."
+			$TSEnv.Value("LoggedOnUser") = "False"
+
+			Get-LoggedOnUser | ForEach-Object{
+
+				if(($_.IsActiveUserSession) -eq "True"){
+					$TSEnv.Value("LoggedOnUser") = "True"
+					$_ | Write-Output 
+
+				}
+
+			}
+			
 		}
 
 		## Test if Reboot already scheduled within the last day.
